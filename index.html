@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Victoria AYP LLC | Control Logístico</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="mobile-backdrop" id="mobileBackdrop"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Victoria AYP LLC">
+        <div>
+          <h1>Victoria AYP</h1>
+          <span>Control Logístico</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="panel">Panel general</button>
+        <button class="nav-item" data-view="viajes">Viajes</button>
+        <button class="nav-item" data-view="ruta">Ruta y millas</button>
+        <button class="nav-item" data-view="gastos">Gastos</button>
+        <button class="nav-item" data-view="mantenimiento">Mantenimiento</button>
+        <button class="nav-item" data-view="reportes">Reportes</button>
+        <button class="nav-item" data-view="configuracion">Configuración</button>
+      </nav>
+      <div class="side-footer">
+        <span>Houston, TX</span>
+        <strong id="sideDate"></strong>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+        <div>
+          <p class="eyebrow">Operación financiera</p>
+          <h2 id="sectionTitle">Panel general</h2>
+        </div>
+        <div class="top-actions">
+          <button class="ghost" id="exportCsvTop">Excel</button>
+          
+        </div>
+      </header>
+
+      <section class="view active" id="panel">
+        <div class="hero-card">
+          <div>
+            <p>Resumen operativo</p>
+            <h3>Viajes, millas, pagos y gastos bajo una sola vista.</h3>
+          </div>
+          <div class="hero-metric">
+            <span>Tarifa por milla</span>
+            <strong id="heroRate">US$5.00</strong>
+          </div>
+        </div>
+        <div class="metrics-grid">
+          <article class="metric-card"><span>Ingresos generados</span><strong id="totalRevenue">US$0.00</strong></article>
+          <article class="metric-card"><span>Gastos registrados</span><strong id="totalExpenses">US$0.00</strong></article>
+          <article class="metric-card"><span>Ganancia neta</span><strong id="netProfit">US$0.00</strong></article>
+          <article class="metric-card"><span>Millas recorridas</span><strong id="totalMiles">0</strong></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel-card large">
+            <div class="card-head"><h3>Últimos viajes</h3><button class="small-btn" data-jump="viajes">Nuevo viaje</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Ruta</th><th>Millas</th><th>Total</th><th>Estado</th></tr></thead><tbody id="recentTrips"></tbody></table></div>
+          </article>
+          <article class="panel-card">
+            <div class="card-head"><h3>Estado financiero</h3></div>
+            <div class="progress-list">
+              <div><span>Pagado</span><strong id="paidAmount">US$0.00</strong></div>
+              <div><span>Pendiente</span><strong id="pendingAmount">US$0.00</strong></div>
+              <div><span>Gastos</span><strong id="expenseAmount">US$0.00</strong></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="viajes">
+        <div class="form-layout">
+          <form class="panel-card form-card" id="tripForm">
+            <div class="card-head"><h3>Registro de viaje</h3></div>
+            <div class="form-grid">
+              <label>Fecha<input type="date" name="date" required></label>
+              <label>Broker<input type="text" name="broker" placeholder="Nombre del broker"></label>
+              <label>Número de carga<input type="text" name="load" placeholder="Carga"></label>
+              <label>Shipper<input type="text" name="shipper" placeholder="Origen comercial"></label>
+              <label>Receiver<input type="text" name="receiver" placeholder="Destino comercial"></label>
+              <label>Origen<input type="text" name="origin" id="tripOrigin" placeholder="Houston, TX" required></label>
+              <label>Destino<input type="text" name="destination" id="tripDestination" placeholder="Dallas, TX" required></label>
+              <label>Millas<input type="number" name="miles" id="tripMiles" min="0" step="0.01" required></label>
+              <label>Precio por milla<input type="number" name="rate" id="tripRate" min="0" step="0.01" required></label>
+              <label>Estado<select name="status"><option>Pagado</option><option>Pendiente</option></select></label>
+            </div>
+            <div class="calc-box"><span>Total del viaje</span><strong id="tripTotalPreview">US$0.00</strong></div>
+            <div class="form-actions"><button class="primary full" type="submit" id="tripSubmitBtn">Guardar viaje</button><button class="ghost full hidden" type="button" id="cancelTripEdit">Cancelar edición</button></div>
+          </form>
+          <article class="panel-card large"><div class="card-head"><h3>Historial de viajes</h3><button class="small-btn danger" id="clearTrips">Limpiar</button></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Broker</th><th>Ruta</th><th>Millas</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tripsTable"></tbody></table></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="ruta">
+        <div class="route-layout">
+          <article class="panel-card route-panel">
+            <div class="card-head"><h3>Calculadora de ruta</h3></div>
+            <label>Origen<input type="text" id="routeOrigin" placeholder="Houston, TX"></label>
+            <label>Destino<input type="text" id="routeDestination" placeholder="New York, NY"></label>
+            <div class="route-actions">
+              <button class="ghost" id="useLocation" type="button">Usar ciudad base</button>
+              <button class="primary" id="calculateRoute" type="button">Calcular</button>
+            </div>
+            <div class="route-summary">
+              <div><span>Distancia</span><strong id="routeMiles">0 mi</strong></div>
+              <div><span>Tiempo estimado</span><strong id="routeTime">0 h</strong></div>
+              <div><span>Total</span><strong id="routeTotal">US$0.00</strong></div>
+            </div>
+            <button class="primary full" id="sendRouteToTrip" type="button">Pasar al registro de viaje</button>
+          </article>
+          <article class="map-card">
+            <div id="map"></div>
+            <div class="map-fallback" id="mapFallback">
+              <div class="pin start">A</div>
+              <svg viewBox="0 0 800 420" preserveAspectRatio="none"><path d="M90 320 C210 90 350 370 480 150 S680 85 720 300"></path></svg>
+              <div class="pin end">B</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="gastos">
+        <div class="form-layout">
+          <form class="panel-card form-card" id="expenseForm">
+            <div class="card-head"><h3>Registro de gasto</h3></div>
+            <div class="form-grid">
+              <label>Fecha<input type="date" name="date" required></label>
+              <label>Categoría<select name="category"><option>Combustible</option><option>Mecánica</option><option>Lavado</option><option>Piezas</option><option>Cambio de aceite</option><option>Peajes</option><option>Comida</option><option>Seguro</option><option>Otros</option></select></label>
+              <label>Descripción<input type="text" name="description" placeholder="Detalle del gasto"></label>
+              <label>Monto<input type="number" name="amount" min="0" step="0.01" required></label>
+            </div>
+            <div class="form-actions"><button class="primary full" type="submit" id="expenseSubmitBtn">Guardar gasto</button><button class="ghost full hidden" type="button" id="cancelExpenseEdit">Cancelar edición</button></div>
+          </form>
+          <article class="panel-card large"><div class="card-head"><h3>Historial de gastos</h3><button class="small-btn danger" id="clearExpenses">Limpiar</button></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Monto</th><th>Acciones</th></tr></thead><tbody id="expensesTable"></tbody></table></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="mantenimiento">
+        <div class="panel-card">
+          <div class="card-head"><h3>Mantenimiento</h3></div>
+          <div class="maintenance-grid" id="maintenanceGrid"></div>
+        </div>
+      </section>
+
+      <section class="view" id="reportes">
+        <div class="panel-card">
+          <div class="card-head"><h3>Reportes fiscales</h3><div><button class="ghost" id="exportCsv">Descargar Excel</button></div></div>
+          <div class="report-box" id="reportBox"></div>
+        </div>
+      </section>
+
+      <section class="view" id="configuracion">
+        <form class="panel-card form-card" id="settingsForm">
+          <div class="card-head"><h3>Configuración</h3></div>
+          <div class="form-grid">
+            <label>Empresa<input type="text" name="company" id="companyName"></label>
+            <label>Precio por milla<input type="number" name="rate" id="defaultRate" step="0.01"></label>
+            <label>Ciudad base<input type="text" name="baseCity" id="baseCity" placeholder="Houston, TX"></label>
+          </div>
+          <div class="backup-actions">
+            <button class="ghost full" type="button" id="exportBackup">Exportar respaldo</button>
+            <label class="backup-import">Importar respaldo<input type="file" id="importBackup" accept="application/json,.json"></label>
+          </div>
+          <button class="primary full" type="submit">Guardar configuración</button>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
