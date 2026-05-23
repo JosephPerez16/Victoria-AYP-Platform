@@ -20,7 +20,6 @@ function toSettingRow(){return{id:'main',company_name:config.companyName,default
 function applySettingRow(row){if(!row)return;config.companyName=row.company_name||config.companyName;config.defaultRatePerMile=Number(row.default_rate_per_mile)||config.defaultRatePerMile;config.baseCity=row.base_city||config.baseCity;localSaveSettings()}
 async function loadSupabaseData(){
   if(!supabaseClient)return
-  const localTrips=trips.slice(),localExpenses=expenses.slice()
   const [tripsRes,expensesRes,settingsRes]=await Promise.all([
     remoteRun(()=>supabaseClient.from('vayp_trips').select('*').order('date',{ascending:false})),
     remoteRun(()=>supabaseClient.from('vayp_expenses').select('*').order('date',{ascending:false})),
@@ -29,8 +28,6 @@ async function loadSupabaseData(){
   if(settingsRes&&!settingsRes.error)applySettingRow(settingsRes.data)
   if(tripsRes&&!tripsRes.error)trips=Array.isArray(tripsRes.data)?tripsRes.data:[]
   if(expensesRes&&!expensesRes.error)expenses=Array.isArray(expensesRes.data)?expensesRes.data:[]
-  if(!trips.length&&localTrips.length){trips=localTrips;await remoteRun(()=>supabaseClient.from('vayp_trips').upsert(trips))}
-  if(!expenses.length&&localExpenses.length){expenses=localExpenses;await remoteRun(()=>supabaseClient.from('vayp_expenses').upsert(expenses))}
   await remoteRun(()=>supabaseClient.from('vayp_settings').upsert(toSettingRow()))
   localSave()
 }
@@ -44,11 +41,11 @@ function setupRealtime(){
 }
 function refreshFromRealtime(){clearTimeout(realtimeTimer);realtimeTimer=setTimeout(async()=>{await loadSupabaseData();render()},350)}
 async function saveTripRemote(t){localSave();await remoteRun(()=>supabaseClient.from('vayp_trips').upsert(t))}
-async function deleteTripRemote(id){const res=await remoteRun(()=>supabaseClient.from('vayp_trips').delete().eq('id',id).select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudo eliminar el viaje en Supabase.');localSave();return true}
-async function clearTripsRemote(){const res=await remoteRun(()=>supabaseClient.from('vayp_trips').delete().neq('id','').select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudieron limpiar los viajes en Supabase.');localSave();return true}
+async function deleteTripRemote(id){const res=await remoteRun(()=>supabaseClient.from('vayp_trips').delete().eq('id',id).select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudo eliminar el viaje en Supabase.');return true}
+async function clearTripsRemote(){const res=await remoteRun(()=>supabaseClient.from('vayp_trips').delete().neq('id','').select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudieron limpiar los viajes en Supabase.');return true}
 async function saveExpenseRemote(e){localSave();await remoteRun(()=>supabaseClient.from('vayp_expenses').upsert(e))}
-async function deleteExpenseRemote(id){const res=await remoteRun(()=>supabaseClient.from('vayp_expenses').delete().eq('id',id).select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudo eliminar el gasto en Supabase.');localSave();return true}
-async function clearExpensesRemote(){const res=await remoteRun(()=>supabaseClient.from('vayp_expenses').delete().neq('id','').select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudieron limpiar los gastos en Supabase.');localSave();return true}
+async function deleteExpenseRemote(id){const res=await remoteRun(()=>supabaseClient.from('vayp_expenses').delete().eq('id',id).select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudo eliminar el gasto en Supabase.');return true}
+async function clearExpensesRemote(){const res=await remoteRun(()=>supabaseClient.from('vayp_expenses').delete().neq('id','').select('id'));if(res&&res.error)throw new Error(res.error.message||'No se pudieron limpiar los gastos en Supabase.');return true}
 async function saveSettingsRemote(){localSaveSettings();await remoteRun(()=>supabaseClient.from('vayp_settings').upsert(toSettingRow()))}
 let lastRoute=null
 let map=null
