@@ -2,9 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Victoria AYP">
   <title>Victoria AYP LLC | Control Logístico</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
@@ -24,8 +30,8 @@
       </div>
       <nav class="nav">
         <button class="nav-item active" data-view="panel">Panel general</button>
-        <button class="nav-item" data-view="viajes">Viajes</button>
         <button class="nav-item" data-view="ruta">Ruta y millas</button>
+        <button class="nav-item" data-view="viajes">Viajes</button>
         <button class="nav-item" data-view="gastos">Gastos</button>
         <button class="nav-item" data-view="mantenimiento">Mantenimiento</button>
         <button class="nav-item" data-view="reportes">Reportes</button>
@@ -80,6 +86,40 @@
               <div><span>Gastos</span><strong id="expenseAmount">US$0.00</strong></div>
             </div>
           </article>
+          <article class="panel-card calendar-card">
+            <div class="card-head"><h3>Calendario operativo</h3><div><button class="icon-btn" id="prevCalendar" type="button">‹</button><button class="icon-btn" id="nextCalendar" type="button">›</button></div></div>
+            <div class="calendar-title" id="calendarTitle"></div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="ruta">
+        <div class="route-layout">
+          <article class="panel-card route-panel">
+            <div class="card-head"><h3>Calculadora de ruta</h3></div>
+            <label>Origen exacto<input type="text" id="routeOrigin" placeholder="Dirección exacta o coordenadas GPS"></label>
+            <label>Destino exacto<input type="text" id="routeDestination" placeholder="Dirección exacta, ciudad o coordenadas GPS"></label>
+            <div class="route-actions">
+              <button class="ghost" id="useLocation" type="button">Usar mi ubicación</button>
+              <button class="primary" id="calculateRoute" type="button">Calcular</button>
+            </div>
+            <div class="route-summary">
+              <div><span>Distancia</span><strong id="routeMiles">0 mi</strong></div>
+              <div><span>Tiempo estimado</span><strong id="routeTime">0 h</strong></div>
+              <div><span>Total</span><strong id="routeTotal">US$0.00</strong></div>
+            </div>
+            <button class="ghost full" id="sendRouteToTrip" type="button">Pasar a viajes</button>
+            <button class="primary full" id="startRouteTrip" type="button">Iniciar viaje</button>
+          </article>
+          <article class="map-card">
+            <div id="map"></div>
+            <div class="map-fallback" id="mapFallback">
+              <div class="pin start">A</div>
+              <svg viewBox="0 0 800 420" preserveAspectRatio="none"><path d="M90 320 C210 90 350 370 480 150 S680 85 720 300"></path></svg>
+              <div class="pin end">B</div>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -103,34 +143,6 @@
             <div class="form-actions"><button class="primary full" type="submit" id="tripSubmitBtn">Guardar viaje</button><button class="ghost full hidden" type="button" id="cancelTripEdit">Cancelar edición</button></div>
           </form>
           <article class="panel-card large"><div class="card-head"><h3>Historial de viajes</h3><button class="small-btn danger" id="clearTrips">Limpiar</button></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Broker</th><th>Ruta</th><th>Millas</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tripsTable"></tbody></table></div></article>
-        </div>
-      </section>
-
-      <section class="view" id="ruta">
-        <div class="route-layout">
-          <article class="panel-card route-panel">
-            <div class="card-head"><h3>Calculadora de ruta</h3></div>
-            <label>Origen<input type="text" id="routeOrigin" placeholder="Houston, TX"></label>
-            <label>Destino<input type="text" id="routeDestination" placeholder="New York, NY"></label>
-            <div class="route-actions">
-              <button class="ghost" id="useLocation" type="button">Usar ciudad base</button>
-              <button class="primary" id="calculateRoute" type="button">Calcular</button>
-            </div>
-            <div class="route-summary">
-              <div><span>Distancia</span><strong id="routeMiles">0 mi</strong></div>
-              <div><span>Tiempo estimado</span><strong id="routeTime">0 h</strong></div>
-              <div><span>Total</span><strong id="routeTotal">US$0.00</strong></div>
-            </div>
-            <button class="primary full" id="sendRouteToTrip" type="button">Pasar al registro de viaje</button>
-          </article>
-          <article class="map-card">
-            <div id="map"></div>
-            <div class="map-fallback" id="mapFallback">
-              <div class="pin start">A</div>
-              <svg viewBox="0 0 800 420" preserveAspectRatio="none"><path d="M90 320 C210 90 350 370 480 150 S680 85 720 300"></path></svg>
-              <div class="pin end">B</div>
-            </div>
-          </article>
         </div>
       </section>
 
@@ -182,7 +194,9 @@
     </main>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="script.js"></script>
+  <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(()=>{}))}</script>
 </body>
 </html>
