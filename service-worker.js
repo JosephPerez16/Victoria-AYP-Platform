@@ -1,4 +1,4 @@
-const CACHE_NAME='victoria-ayp-v6-sync-fix'
+const CACHE_NAME='victoria-ayp-v7-ios-db-safe'
 const ASSETS=['./','./index.html','./styles.css','./script.js','./config.js','./manifest.json','./assets/logo.png']
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()))})
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).then(()=>self.clients.claim()))})
