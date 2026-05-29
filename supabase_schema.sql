@@ -25,6 +25,10 @@ create table if not exists public.vayp_expenses (
   updated_at timestamptz default now()
 );
 
+
+alter table public.vayp_expenses add column if not exists partner_percent numeric;
+alter table public.vayp_expenses add column if not exists partner_amount numeric;
+
 create table if not exists public.vayp_settings (
   id text primary key default 'main',
   company_name text default 'Victoria AYP LLC',

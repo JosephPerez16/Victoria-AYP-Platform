@@ -136,10 +136,10 @@
               <label>Origen<input type="text" name="origin" id="tripOrigin" placeholder="Houston, TX" required></label>
               <label>Destino<input type="text" name="destination" id="tripDestination" placeholder="Dallas, TX" required></label>
               <label>Millas<input type="number" name="miles" id="tripMiles" min="0" step="0.01" required></label>
-              <label>Precio por milla<input type="number" name="rate" id="tripRate" min="0" step="0.01" required></label>
+              <label>Monto cobrado<input type="number" name="total" id="tripTotal" min="0" step="0.01" placeholder="Monto negociado" required></label>
               <label>Estado<select name="status"><option>Pagado</option><option>Pendiente</option></select></label>
             </div>
-            <div class="calc-box"><span>Total del viaje</span><strong id="tripTotalPreview">US$0.00</strong></div>
+            <div class="calc-box"><span>Total del viaje</span><strong id="tripTotalPreview">US$0.00</strong><small id="tripRatePreview">Promedio: US$0.00/mi</small></div>
             <div class="form-actions"><button class="primary full" type="submit" id="tripSubmitBtn">Guardar viaje</button><button class="ghost full hidden" type="button" id="cancelTripEdit">Cancelar edición</button></div>
           </form>
           <article class="panel-card large"><div class="card-head"><h3>Historial de viajes</h3><button class="small-btn danger" id="clearTrips">Limpiar</button></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Broker</th><th>Ruta</th><th>Millas</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tripsTable"></tbody></table></div></article>
@@ -152,13 +152,14 @@
             <div class="card-head"><h3>Registro de gasto</h3></div>
             <div class="form-grid">
               <label>Fecha<input type="date" name="date" required></label>
-              <label>Categoría<select name="category"><option>Combustible</option><option>Mecánica</option><option>Lavado</option><option>Piezas</option><option>Cambio de aceite</option><option>Peajes</option><option>Comida</option><option>Seguro</option><option>Otros</option></select></label>
-              <label>Descripción<input type="text" name="description" placeholder="Detalle del gasto"></label>
-              <label>Monto<input type="number" name="amount" min="0" step="0.01" required></label>
+              <label>Categoría<select name="category" id="expenseCategory"><option>Combustible</option><option>Mecánica</option><option>Lavado</option><option>Piezas</option><option>Cambio de aceite</option><option>Peajes</option><option>Comida</option><option>Seguro</option><option>Pago a socio</option><option>Otros</option></select></label>
+              <label>Descripción<input type="text" name="description" id="expenseDescription" placeholder="Detalle del gasto"></label>
+              <label>Porcentaje socio<input type="number" name="partner_percent" id="partnerPercent" min="0" max="100" step="0.01" placeholder="Ej: 15"></label>
+              <label>Monto<input type="number" name="amount" id="expenseAmountInput" min="0" step="0.01" required></label>
             </div>
             <div class="form-actions"><button class="primary full" type="submit" id="expenseSubmitBtn">Guardar gasto</button><button class="ghost full hidden" type="button" id="cancelExpenseEdit">Cancelar edición</button></div>
           </form>
-          <article class="panel-card large"><div class="card-head"><h3>Historial de gastos</h3><button class="small-btn danger" id="clearExpenses">Limpiar</button></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Monto</th><th>Acciones</th></tr></thead><tbody id="expensesTable"></tbody></table></div></article>
+          <article class="panel-card large"><div class="card-head"><h3>Historial de gastos</h3><button class="small-btn danger" id="clearExpenses">Limpiar</button></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>% Socio</th><th>Pago socio</th><th>Monto</th><th>Acciones</th></tr></thead><tbody id="expensesTable"></tbody></table></div></article>
         </div>
       </section>
 
