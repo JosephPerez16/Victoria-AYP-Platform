@@ -17,7 +17,39 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="auth-locked">
+
+  <section class="login-screen" id="loginScreen" aria-label="Inicio de sesión">
+    <div class="login-bg-layer"></div>
+    <div class="login-card">
+      <div class="login-logo-wrap">
+        <img src="assets/logo.png" alt="Victoria AYP LLC">
+      </div>
+      <p class="login-kicker">Acceso privado</p>
+      <h1>Victoria AYP LLC</h1>
+      <p class="login-subtitle">Control seguro para viajes, millas, gastos y reportes operativos.</p>
+      <form id="loginForm" class="login-form" autocomplete="on">
+        <label>Usuario
+          <input type="text" id="loginUser" name="username" placeholder="Ingrese su usuario" autocomplete="username" required>
+        </label>
+        <label>Contraseña
+          <div class="password-field">
+            <input type="password" id="loginPass" name="password" placeholder="Ingrese su contraseña" autocomplete="current-password" required>
+            <button type="button" id="togglePassword" aria-label="Mostrar u ocultar contraseña">Ver</button>
+          </div>
+        </label>
+        <div class="login-row">
+          <label class="remember-check"><input type="checkbox" id="rememberSession"> Mantener sesión</label>
+          <span class="private-access">Acceso interno</span>
+        </div>
+        <button type="submit" class="login-submit">Entrar al sistema</button>
+        <p class="login-error" id="loginError" role="alert"></p>
+      </form>
+      <div class="login-security">
+        <span></span> Sesión protegida en este dispositivo
+      </div>
+    </div>
+  </section>
   <div class="mobile-backdrop" id="mobileBackdrop"></div>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
@@ -52,7 +84,7 @@
         </div>
         <div class="top-actions">
           <button class="ghost" id="exportCsvTop">Excel</button>
-          
+          <button class="ghost logout-btn" id="logoutBtn" type="button">Salir</button>
         </div>
       </header>
 

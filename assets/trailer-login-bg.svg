@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#050505"/><stop offset=".42" stop-color="#17100a"/><stop offset="1" stop-color="#020202"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b8862d"/><stop offset=".5" stop-color="#f0cb75"/><stop offset="1" stop-color="#8d641e"/></linearGradient>
+    <radialGradient id="light" cx="50%" cy="42%" r="55%"><stop offset="0" stop-color="#f3c86c" stop-opacity=".42"/><stop offset="1" stop-color="#f3c86c" stop-opacity="0"/></radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="28"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <rect width="1600" height="1000" fill="url(#light)"/>
+  <path d="M0 710 C260 650 420 760 690 710 C970 648 1118 620 1600 695 L1600 1000 L0 1000Z" fill="#080808"/>
+  <path d="M0 805 C350 750 600 808 900 775 C1160 748 1370 750 1600 785" stroke="#c9973b" stroke-opacity=".48" stroke-width="10" fill="none"/>
+  <g opacity=".34" filter="url(#blur)"><ellipse cx="1230" cy="650" rx="240" ry="54" fill="#e5b85c"/><ellipse cx="465" cy="704" rx="210" ry="44" fill="#e5b85c"/></g>
+  <g transform="translate(560 405) scale(1.08)" opacity=".98">
+    <path d="M0 150 H690 C742 150 790 186 807 236 L836 320 H42 C14 320 -8 298 -8 270 V158 C-8 154 -5 150 0 150Z" fill="#111" stroke="#4a3517" stroke-width="4"/>
+    <path d="M678 158 H790 C842 158 889 190 908 239 L940 320 H818 L787 232 C774 197 742 174 705 174 H678Z" fill="#151515" stroke="#4a3517" stroke-width="4"/>
+    <rect x="58" y="60" width="520" height="132" rx="18" fill="#1b1b1b" stroke="url(#gold)" stroke-width="5"/>
+    <rect x="93" y="84" width="182" height="54" rx="10" fill="#f0cb75" opacity=".88"/>
+    <rect x="306" y="84" width="224" height="54" rx="10" fill="#f0cb75" opacity=".72"/>
+    <path d="M728 190 H800 C825 190 849 207 858 231 L877 281 H718Z" fill="#c9973b" opacity=".7"/>
+    <rect x="22" y="205" width="625" height="36" rx="18" fill="url(#gold)" opacity=".85"/>
+    <circle cx="170" cy="322" r="70" fill="#080808" stroke="#2b2b2b" stroke-width="16"/>
+    <circle cx="170" cy="322" r="28" fill="url(#gold)"/>
+    <circle cx="650" cy="322" r="70" fill="#080808" stroke="#2b2b2b" stroke-width="16"/>
+    <circle cx="650" cy="322" r="28" fill="url(#gold)"/>
+    <circle cx="850" cy="322" r="66" fill="#080808" stroke="#2b2b2b" stroke-width="16"/>
+    <circle cx="850" cy="322" r="26" fill="url(#gold)"/>
+  </g>
+  <g opacity=".18">
+    <path d="M120 130 H600" stroke="#fff" stroke-width="2"/><path d="M930 170 H1480" stroke="#fff" stroke-width="2"/><path d="M80 250 H360" stroke="#d7a94a" stroke-width="2"/><path d="M1130 300 H1540" stroke="#d7a94a" stroke-width="2"/>
+  </g>
+</svg>
