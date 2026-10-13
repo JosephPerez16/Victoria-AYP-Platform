@@ -16,7 +16,7 @@ const authKey='vayp_auth_session'
 let authBound=false
 let appStarted=false
 function showLogin(){document.body.classList.add('auth-locked');$('#loginScreen')?.classList.remove('hidden')}
-function hideLogin(){document.body.classList.remove('auth-locked');$('#loginScreen')?.classList.add('hidden')}
+function hideLogin(){const screen=$('#loginScreen');if(screen)screen.classList.add('ayp-leaving');document.body.classList.remove('auth-locked');screen?.classList.add('hidden');screen?.classList.remove('ayp-leaving')}
 function readAuthSession(){try{return JSON.parse(sessionStorage.getItem(authKey)||localStorage.getItem(authKey)||'null')}catch(e){return null}}
 function clearAuthSession(){sessionStorage.removeItem(authKey);localStorage.removeItem(authKey)}
 function isAuthenticated(){const session=readAuthSession();if(!session||!session.user||!session.expires||Date.now()>Number(session.expires)){clearAuthSession();return false}return true}

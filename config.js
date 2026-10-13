@@ -7,6 +7,6 @@ window.APP_CONFIG = {
   authSessionHours: 8,
   authUsers: [
     { username: "yahiris", name: "Yahiris", passwordHash: "85f38b91501b7473af8c5bc7e4a2d9e576bd13e28aa254475bba3408e9920cd3" },
-    { username: "aneudy", name: "Aneudy", passwordHash: "85f38b91501b7473af8c5bc7e4a2d9e576bd13e28aa254475bba3408e9920cd3" }
+    { username: "aneuris", name: "Aneuris", passwordHash: "85f38b91501b7473af8c5bc7e4a2d9e576bd13e28aa254475bba3408e9920cd3" }
   ]
 }
